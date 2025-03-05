@@ -28,7 +28,7 @@ export class AuthService {
     this.auth0.loginWithRedirect();
   }
 
-  logout() {
+  logout(): void {
     this.auth0.logout({
       logoutParams: {
         returnTo: this.document.location.origin,

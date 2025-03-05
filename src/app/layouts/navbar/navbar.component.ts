@@ -2,10 +2,11 @@ import { Component, inject, effect, Renderer2, ViewChild, ElementRef } from '@an
 import { AuthService } from '../../core/services/auth.service';
 import { LoginButtonComponent } from '../../shared/components/buttons/login-button/login-button.component';
 import { LogoutButtonComponent } from '../../shared/components/buttons/logout-button/logout-button.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [LoginButtonComponent, LogoutButtonComponent],
+  imports: [RouterLink, LoginButtonComponent, LogoutButtonComponent],
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
