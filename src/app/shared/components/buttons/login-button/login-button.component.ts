@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login-button',
@@ -12,6 +12,6 @@ export class LoginButtonComponent {
   private auth = inject(AuthService);
 
   login() {
-    this.auth.loginWithRedirect();
+    this.auth.login();
   }
 }
