@@ -1,8 +1,38 @@
-<nav class="align-center align-center flex justify-between bg-white p-6">
-  <div class="align-center *:align-center flex justify-center gap-6 *:flex">
-    <div>Services</div>
-    <div>Access</div>
-    <div>Peding</div>
-  </div>
-  <div class="h-12 w-12 rounded-full border"></div>
+<nav class="align-center flex justify-between items-center bg-white p-6">
+  @if (!isAuthenticated) {
+    <app-login-button />
+  } @else {
+    <div class="align-center flex justify-center gap-6 relative">
+      <div>Services</div>
+      <div>Access</div>
+      <div>Pending</div>
+    </div>
+    <button
+      type="button"
+      class="ml-4"
+      (click)="toggleUserMenu()"
+      #userMenuButton
+    >
+      <img class="h-12 w-12 rounded-full" [src]="userPicture" alt="User Profile Picture">
+    </button>
+    @if (userMenuOpen) {
+      <div
+        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="user-menu-button"
+        tabindex="-1"
+        #menu
+      >
+        <div
+          class="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-gray-100"
+          role="menuitem"
+          tabindex="-1"
+          id="user-menu-item-2"
+        >
+          <app-logout-button />
+        </div>
+      </div>
+    }
+  }
 </nav>

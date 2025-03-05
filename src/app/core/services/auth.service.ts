@@ -1,29 +1,26 @@
 import { DOCUMENT } from '@angular/common';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private auth0 = inject(Auth0Service);
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private userSubject = new BehaviorSubject<User | null>(null);
-  public document = inject(DOCUMENT);
+  private document = inject(DOCUMENT);
 
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  user$ = this.userSubject.asObservable();
+  isAuthenticated = signal<boolean>(false);
+  user = signal<User | null>(null);
 
   constructor() {
     // Subscribe to Auth0 authentication state
     this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
-      this.isAuthenticatedSubject.next(isAuthenticated);
+      this.isAuthenticated.set(isAuthenticated);
     });
 
     // Subscribe to user details
     this.auth0.user$.subscribe((user) => {
-      this.userSubject.next(user || null);
+      this.user.set(user || null);
     });
   }
 
@@ -40,6 +37,6 @@ export class AuthService {
   }
 
   getUser(): User | null {
-    return this.userSubject.value;
+    return this.user();
   }
 }
