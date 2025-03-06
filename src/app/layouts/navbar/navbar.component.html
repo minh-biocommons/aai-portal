@@ -1,51 +1,89 @@
 <nav class="bg-white p-6 shadow">
-  @if (!isAuthenticated) {
+  @if (isAuthenticated) {
     <div class="flex w-full justify-center">
       <app-login-button />
     </div>
   } @else {
-    <div class="flex justify-between items-center">
-      <div class="text-blue-500 relative">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-        </svg> 
+    <div class="flex items-center justify-between">
+      <div class="relative text-blue-500">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-10"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+          />
+        </svg>
       </div>
-      <div class="font-semibold text-2xl text-sky-500">Dashboard</div>
+      <div class="text-2xl font-semibold text-sky-500">Dashboard</div>
       <div class="relative">
         <div>
-          <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true" (click)="toggleUserMenu()"
-          #userMenuButton>
+          <button
+            type="button"
+            class="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+            id="user-menu-button"
+            aria-expanded="false"
+            aria-haspopup="true"
+            (click)="toggleUserMenu()"
+            #userMenuButton
+          >
             <span class="absolute -inset-1.5"></span>
             <span class="sr-only">Open user menu</span>
-            <img class="h-10 w-10 rounded-full" [src]="userPicture" alt="User Profile Picture">
+            <img class="h-10 w-10 rounded-full" [src]="userPicture" />
           </button>
         </div>
-      @if (userMenuOpen) {
-        <div
-          class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow focus:outline-none"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="user-menu-button"
-          tabindex="-1"
-          #menu
-        >
+        @if (userMenuOpen) {
           <div
-            class="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-gray-100"
-            role="menuitem"
+            class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="user-menu-button"
             tabindex="-1"
-            id="user-menu-item-2"
+            #menu
           >
-            <app-logout-button />
+            <div
+              class="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-gray-100"
+              role="menuitem"
+              tabindex="-1"
+              id="user-menu-item-2"
+            >
+              <app-logout-button />
+            </div>
           </div>
-        </div>
-      }
+        }
       </div>
     </div>
 
-    <div class="align-center flex justify-center gap-2 relative mt-12 font-medium text-sky-900 *:py-2 *:px-8 *:rounded *:hover:cursor-pointer *:bg-gray-100 *:hover:bg-gray-200">
-      <a routerLink="/services" routerLinkActive="active">Services</a>
-      <a routerLink="/access" routerLinkActive="active">Access</a>
-      <a routerLink="/pending" LinkActive="active">Pending</a>
+    <div
+      class="align-center relative mt-12 flex justify-center gap-2 text-sky-900 *:rounded-md *:px-6 *:py-2 *:hover:cursor-pointer *:hover:bg-gray-200"
+    >
+      <a
+        routerLink="/services"
+        routerLinkActive="active"
+        class="bg-gray-100"
+        [ngClass]="{ 'bg-sky-900 text-white': isActive('/services') }"
+        >Services</a
+      >
+      <a
+        routerLink="/access"
+        routerLinkActive="active"
+        class="bg-gray-100"
+        [ngClass]="{ 'bg-sky-900 text-white': isActive('/access') }"
+        >Access</a
+      >
+      <a
+        routerLink="/pending"
+        routerLinkActive="active"
+        class="bg-gray-100"
+        [ngClass]="{ 'bg-sky-900 text-white': isActive('/pending') }"
+        >Pending</a
+      >
     </div>
   }
 </nav>

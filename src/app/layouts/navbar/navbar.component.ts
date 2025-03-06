@@ -1,12 +1,25 @@
-import { Component, inject, effect, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  effect,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { LoginButtonComponent } from '../../shared/components/buttons/login-button/login-button.component';
 import { LogoutButtonComponent } from '../../shared/components/buttons/logout-button/logout-button.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, LoginButtonComponent, LogoutButtonComponent],
+  imports: [
+    RouterLink,
+    LoginButtonComponent,
+    LogoutButtonComponent,
+    CommonModule,
+  ],
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
@@ -14,9 +27,11 @@ import { RouterLink } from '@angular/router';
 export class NavbarComponent {
   private auth = inject(AuthService);
   private renderer = inject(Renderer2);
+  private router = inject(Router);
 
   @ViewChild('menu', { read: ElementRef }) menu!: ElementRef;
-  @ViewChild('userMenuButton', { read: ElementRef }) userMenuButton!: ElementRef;
+  @ViewChild('userMenuButton', { read: ElementRef })
+  userMenuButton!: ElementRef;
 
   isAuthenticated = this.auth.isAuthenticated();
   user = this.auth.getUser();
@@ -42,5 +57,9 @@ export class NavbarComponent {
 
   toggleUserMenu() {
     this.userMenuOpen = !this.userMenuOpen;
+  }
+
+  isActive(url: string): boolean {
+    return this.router.url === url;
   }
 }
