@@ -5,12 +5,14 @@ import {
   Renderer2,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { LoginButtonComponent } from '../../shared/components/buttons/login-button/login-button.component';
 import { LogoutButtonComponent } from '../../shared/components/buttons/logout-button/logout-button.component';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +26,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnDestroy {
   private auth = inject(AuthService);
   private renderer = inject(Renderer2);
   private router = inject(Router);
@@ -34,15 +36,17 @@ export class NavbarComponent {
   userMenuButton!: ElementRef;
 
   isAuthenticated = this.auth.isAuthenticated();
-  user = this.auth.getUser();
-  userPicture = this.user?.picture || '';
+  user!: any;
   userMenuOpen = false;
+  private userSubscription!: Subscription;
 
   constructor() {
     effect(() => {
       this.isAuthenticated = this.auth.isAuthenticated();
-      this.user = this.auth.getUser();
-      this.userPicture = this.user?.picture || '';
+      this.userSubscription = this.auth.getUser().subscribe((user) => {
+        this.user = user;
+        console.log(this.user);
+      });
     });
 
     this.renderer.listen('window', 'click', (e: Event) => {
@@ -61,5 +65,11 @@ export class NavbarComponent {
 
   isActive(url: string): boolean {
     return this.router.url === url;
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

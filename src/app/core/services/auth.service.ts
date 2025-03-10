@@ -4,6 +4,7 @@ import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,17 +15,13 @@ export class AuthService {
   private http = inject(HttpClient);
 
   isAuthenticated = signal<boolean>(false);
-  user = signal<User | null>(null);
-  userMetadata = signal<any>(null);
+  user = signal<any>(null);
 
   constructor() {
     // Subscribe to Auth0 authentication state
     this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
       this.isAuthenticated.set(isAuthenticated);
     });
-
-    // Subscribe to user details
-    this.fetchUserMetadata();
   }
 
   login(): void {
@@ -39,25 +36,13 @@ export class AuthService {
     });
   }
 
-  private fetchUserMetadata(): void {
-    this.auth0.user$
-      .pipe(
-        concatMap((user) =>
-          this.http.get(
-            encodeURI(`${environment.auth0.audience}users/${user?.sub}`),
-          ),
+  getUser(): Observable<any> {
+    return this.auth0.user$.pipe(
+      concatMap((user) =>
+        this.http.get(
+          encodeURI(`${environment.auth0.audience}users/${user?.sub}`),
         ),
-        map((user: any) => user.user_metadata),
-        tap((meta) => this.userMetadata.set(meta)),
-      )
-      .subscribe();
-  }
-
-  getUser(): User | null {
-    return this.user();
-  }
-
-  getUserMetadata(): any {
-    return this.userMetadata();
+      ),
+    );
   }
 }

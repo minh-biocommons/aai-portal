@@ -34,8 +34,8 @@
         >
           <span class="absolute -inset-1.5"></span>
           <span class="sr-only">Open user menu</span>
-          @if (userPicture !== "") {
-            <img class="h-10 w-10 rounded-full" [src]="userPicture" />
+          @if (user?.picture) {
+            <img class="h-10 w-10 rounded-full" [src]="user.picture" />
           }
         </button>
         @if (userMenuOpen) {
@@ -89,11 +89,13 @@
           'bg-sky-900 text-white hover:bg-sky-950': isActive('/pending'),
         }"
       >
-        <span
-          class="absolute -top-2 -right-2 min-h-6 min-w-6 rounded-full bg-red-500 px-2 py-1 text-center text-xs text-white"
-        >
-          1
-        </span>
+        @if (user?.user_metadata?.systems?.requested?.length > 0) {
+          <span
+            class="absolute -top-2 -right-2 min-h-6 min-w-6 rounded-full bg-red-500 px-2 py-1 text-center text-xs text-white"
+          >
+            {{ user?.user_metadata?.systems?.requested?.length }}
+          </span>
+        }
         Pending
       </a>
     </div>
