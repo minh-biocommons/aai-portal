@@ -1,5 +1,5 @@
 <nav class="bg-white p-6 shadow">
-  @if (isAuthenticated) {
+  @if (!isAuthenticated) {
     <div class="flex w-full justify-center">
       <app-login-button />
     </div>

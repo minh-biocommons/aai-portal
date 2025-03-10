@@ -3,13 +3,19 @@ import { ServicesComponent } from './pages/user/services/services.component';
 import { AccessComponent } from './pages/user/access/access.component';
 import { PendingComponent } from './pages/user/pending/pending.component';
 import { RequestServiceComponent } from './pages/user/services/request-service/request-service.component';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/services', pathMatch: 'full' },
   {
     path: 'services',
     component: ServicesComponent,
+    children: [
+      {
+        path: 'request',
+        component: RequestServiceComponent,
+      },
+    ],
   },
-  { path: 'request-service', component: RequestServiceComponent },
   { path: 'access', component: AccessComponent },
   { path: 'pending', component: PendingComponent },
 ];
