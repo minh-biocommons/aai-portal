@@ -15,7 +15,6 @@ export class AuthService {
   private http = inject(HttpClient);
 
   isAuthenticated = signal<boolean>(false);
-  user = signal<any>(null);
 
   constructor() {
     // Subscribe to Auth0 authentication state
@@ -43,6 +42,18 @@ export class AuthService {
           encodeURI(`${environment.auth0.audience}users/${user?.sub}`),
         ),
       ),
+    );
+  }
+
+  updateUserMetadata(userId: string, metadata: any): Observable<any> {
+    return this.http.patch(
+      `${environment.auth0.audience}users/${userId}`,
+      { user_metadata: metadata },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     );
   }
 }

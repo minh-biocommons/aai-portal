@@ -93,6 +93,9 @@ export class RequestServiceComponent implements OnInit {
         );
         return;
       }
+    } else if (this.step === 2) {
+      this.submitForm();
+      return;
     }
     this.step++;
   }
@@ -116,5 +119,29 @@ export class RequestServiceComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  submitForm() {
+    const userId = this.user.user_id;
+    const selectedSystemIDs = this.selectedSystems.map((system) => system.id);
+
+    const updatePayload = {
+      systems: {
+        ...this.user.user_metadata.systems,
+        requested: [
+          ...(this.user.user_metadata.systems.requested || []),
+          ...selectedSystemIDs,
+        ],
+      },
+    };
+
+    this.auth.updateUserMetadata(userId, updatePayload).subscribe(
+      () => {
+        this.router.navigate(['/services']);
+      },
+      (error) => {
+        console.error('Error updating user metadata', error);
+      },
+    );
   }
 }

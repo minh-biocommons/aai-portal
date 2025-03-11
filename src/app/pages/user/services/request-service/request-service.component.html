@@ -23,7 +23,11 @@
     </button>
   </div>
 
-  <form [formGroup]="requestForm" class="flex flex-1 flex-col gap-6">
+  <form
+    [formGroup]="requestForm"
+    class="flex flex-1 flex-col gap-6"
+    (ngSubmit)="submitForm()"
+  >
     @if (step === 0) {
       <div class="flex flex-1 flex-col gap-6">
         <div class="text-xl font-bold">Request service access</div>
