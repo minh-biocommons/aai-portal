@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { systemsList } from '../../../core/constants/constants';
 import { AuthService } from '../../../core/services/auth.service';
+import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-pending',
-  imports: [],
+  imports: [LoadingSpinnerComponent],
   templateUrl: './pending.component.html',
   styleUrl: './pending.component.css',
 })
@@ -12,6 +13,7 @@ export class PendingComponent {
   systemsList = systemsList;
   user: any = {};
   pendingSystems: string[] = [];
+  loading = true;
 
   private auth = inject(AuthService);
 
@@ -24,6 +26,7 @@ export class PendingComponent {
           .filter((system) => pendingSystemIDs.includes(system.id))
           .map((system) => system.name);
       }
+      this.loading = false;
     });
   }
 }

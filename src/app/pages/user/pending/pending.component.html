@@ -1,15 +1,21 @@
-<div class="relative flex h-full flex-1 grow flex-col">
+<div class="flex flex-1 flex-col">
   <div class="bg-white p-6 text-2xl font-bold">Pending access request</div>
-  <div class="flex flex-col gap-6 p-6">
-    @for (system of pendingSystems; track system) {
-      <div
-        class="flex items-center justify-between rounded-md bg-white p-4 font-light"
-      >
-        <div class="text-sky-900">{{ system }}</div>
-        <div class="rounded-full bg-orange-400 px-4 py-2 text-sm text-white">
-          Pending
+  @if (loading) {
+    <div class="flex h-full flex-1 flex-col items-center justify-center">
+      <app-loading-spinner />
+    </div>
+  } @else {
+    <div class="flex flex-col gap-6 p-6">
+      @for (system of pendingSystems; track system) {
+        <div
+          class="flex items-center justify-between rounded-md bg-white p-4 font-light"
+        >
+          <div class="text-sky-900">{{ system }}</div>
+          <div class="rounded-full bg-orange-400 px-4 py-2 text-sm text-white">
+            Pending
+          </div>
         </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 </div>

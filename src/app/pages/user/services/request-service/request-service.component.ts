@@ -27,6 +27,7 @@ export class RequestServiceComponent implements OnInit {
   selectedSystems: any[] = [];
   user: any = {};
   loading = true;
+  submitted = false;
 
   requestForm = this.fb.group({
     systems: this.fb.group({}),
@@ -135,13 +136,13 @@ export class RequestServiceComponent implements OnInit {
       },
     };
 
-    this.auth.updateUserMetadata(userId, updatePayload).subscribe(
-      () => {
-        this.router.navigate(['/services']);
-      },
-      (error) => {
+    this.auth.updateUserMetadata(userId, updatePayload).subscribe({
+      next: () => {},
+      error: (error: any) => {
         console.error('Error updating user metadata', error);
       },
-    );
+    });
+
+    this.submitted = true;
   }
 }
