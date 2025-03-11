@@ -27,21 +27,27 @@
     @if (step === 0) {
       <div class="flex flex-1 flex-col gap-6">
         <div class="text-xl font-bold">Request service access</div>
-        <div formGroupName="systems" class="flex flex-1 flex-col gap-6">
-          @for (system of remainingSystems; track system.id) {
-            <div
-              class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-            >
-              <div class="text-gray-500">{{ system.name }}</div>
-              <input
-                type="checkbox"
-                value=""
-                [formControlName]="system.id"
-                class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-              />
-            </div>
-          }
-        </div>
+        @if (loading) {
+          <div class="flex h-full flex-1 flex-col items-center justify-center">
+            <app-loading-spinner />
+          </div>
+        } @else {
+          <div formGroupName="systems" class="flex flex-1 flex-col gap-6">
+            @for (system of remainingSystems; track system.id) {
+              <div
+                class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
+              >
+                <div class="text-gray-500">{{ system.name }}</div>
+                <input
+                  type="checkbox"
+                  value=""
+                  [formControlName]="system.id"
+                  class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
+                />
+              </div>
+            }
+          </div>
+        }
       </div>
     } @else if (step === 1) {
       <div class="flex flex-1 flex-col gap-6">
@@ -121,7 +127,7 @@
         <div class="text-center">
           <button
             type="button"
-            class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 text-white hover:cursor-pointer hover:bg-sky-950"
+            class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 font-light text-white hover:cursor-pointer hover:bg-sky-950"
             routerLink="/services"
           >
             Close
@@ -130,9 +136,9 @@
       </div>
     }
 
-    @if (step < 3) {
+    @if (step < 3 && !loading) {
       <div
-        class="mt-6 flex justify-between font-light *:px-12 *:py-3 *:hover:cursor-pointer"
+        class="mt-6 flex justify-between font-light *:px-8 *:py-3 *:hover:cursor-pointer"
       >
         <button
           type="button"

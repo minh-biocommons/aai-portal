@@ -8,10 +8,11 @@ import {
 } from '@angular/forms';
 import { systemsList } from '../../../../core/constants/constants';
 import { AuthService } from '../../../../core/services/auth.service';
+import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-request-service',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, LoadingSpinnerComponent],
   standalone: true,
   templateUrl: './request-service.component.html',
   styleUrls: ['./request-service.component.css'],
@@ -25,6 +26,7 @@ export class RequestServiceComponent implements OnInit {
   remainingSystems: any[] = [];
   selectedSystems: any[] = [];
   user: any = {};
+  loading = true;
 
   requestForm = this.fb.group({
     systems: this.fb.group({}),
@@ -57,6 +59,7 @@ export class RequestServiceComponent implements OnInit {
           systemsGroup.addControl(system.id, new FormControl(false));
         });
       }
+      this.loading = false;
     });
   }
 
