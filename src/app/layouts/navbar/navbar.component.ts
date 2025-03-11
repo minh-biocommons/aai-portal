@@ -45,7 +45,6 @@ export class NavbarComponent implements OnDestroy {
       this.isAuthenticated = this.auth.isAuthenticated();
       this.userSubscription = this.auth.getUser().subscribe((user) => {
         this.user = user;
-        console.log(this.user);
       });
     });
 

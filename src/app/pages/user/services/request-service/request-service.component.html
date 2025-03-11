@@ -1,5 +1,5 @@
 <div
-  class="absolute top-0 left-0 flex min-h-screen w-screen overflow-x-hidden flex-1 flex-col justify-between bg-gray-100 p-6"
+  class="absolute top-0 left-0 flex min-h-screen w-screen flex-1 flex-col justify-between overflow-x-hidden bg-gray-100 p-6"
 >
   <div class="flex justify-end">
     <button
@@ -22,155 +22,133 @@
       </svg>
     </button>
   </div>
-  @if (step === 0) {
-    <div class="flex flex-1 flex-col gap-6">
-      <div class="text-xl font-bold">Request service access</div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">
-          Threatened Species Initiative Service Hub
-        </div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">Bioplatform Data Portal</div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">Galaxy Australia</div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">Structural Biology Platform</div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-    </div>
-  } @else if (step === 1) {
-    <div class="flex flex-1 flex-col gap-6">
-      <div class="text-xl font-bold">Accept the terms and conditions</div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">
-          Threatened Species Initiative Service Hub
-        </div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-      <div
-        class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
-      >
-        <div class="text-gray-500">Bioplatform Data Portal</div>
-        <input
-          type="checkbox"
-          value=""
-          class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
-        />
-      </div>
-    </div>
-  } @else if (step === 2) {
-    <div class="flex flex-1 flex-col gap-12">
-      <div class="flex flex-col gap-6">
-        <div class="text-xl font-bold">Request access details</div>
-        <div class="font-light text-gray-500">
-          Please check your information and the service access request below.
-        </div>
-      </div>
 
-      <div>
-        <div class="mb-6 text-xl font-bold">Your information</div>
-        <div class="flex flex-col gap-6 font-light text-gray-500">
-          <div>
-            <div>First name</div>
-            <div class="rounded-md bg-white p-4 text-lg">Lisa</div>
+  <form [formGroup]="requestForm" class="flex flex-1 flex-col gap-6">
+    @if (step === 0) {
+      <div class="flex flex-1 flex-col gap-6">
+        <div class="text-xl font-bold">Request service access</div>
+        <div formGroupName="systems" class="flex flex-1 flex-col gap-6">
+          @for (system of remainingSystems; track system.id) {
+            <div
+              class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
+            >
+              <div class="text-gray-500">{{ system.name }}</div>
+              <input
+                type="checkbox"
+                value=""
+                [formControlName]="system.id"
+                class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
+              />
+            </div>
+          }
+        </div>
+      </div>
+    } @else if (step === 1) {
+      <div class="flex flex-1 flex-col gap-6">
+        <div class="text-xl font-bold">Accept the terms and conditions</div>
+        <div formGroupName="selectedSystems" class="flex flex-1 flex-col gap-6">
+          @for (system of selectedSystems; track system.id) {
+            <div
+              class="flex items-center justify-between gap-12 rounded-md bg-white p-5 font-light"
+            >
+              <a
+                href="{{ system.url }}"
+                target="_blank"
+                class="text-sky-600 hover:text-sky-700 hover:underline"
+              >
+                {{ system.name }}
+              </a>
+              <input
+                type="checkbox"
+                value=""
+                [formControlName]="system.id"
+                class="h-6 w-6 shrink-0 rounded-md border border-sky-900"
+              />
+            </div>
+          }
+        </div>
+      </div>
+    } @else if (step === 2) {
+      <div class="flex flex-1 flex-col gap-12">
+        <div class="flex flex-col gap-6">
+          <div class="text-xl font-bold">Request access details</div>
+          <div class="font-light text-gray-500">
+            Please check your information and the service access request below.
           </div>
-          <div>
-            <div>Last name</div>
-            <div class="rounded-md bg-white p-4 text-lg">Citizen</div>
-          </div>
-          <div>
-            <div>Email</div>
-            <div class="rounded-md bg-white p-4 text-lg">
-              lisa&#64;domain.com
+        </div>
+
+        <div>
+          <div class="mb-6 text-xl font-bold">Your information</div>
+          <div class="flex flex-col gap-6 font-light text-gray-500">
+            <div>
+              <div>First name</div>
+              <div class="rounded-md bg-white p-4 text-lg">
+                {{ user?.user_metadata?.first_name }}
+              </div>
+            </div>
+            <div>
+              <div>Last name</div>
+              <div class="rounded-md bg-white p-4 text-lg">
+                {{ user?.user_metadata?.last_name }}
+              </div>
+            </div>
+            <div>
+              <div>Email</div>
+              <div class="rounded-md bg-white p-4 text-lg">
+                {{ user?.email }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div>
-        <div class="mb-6 text-xl font-bold">Service access request</div>
-        <div class="flex flex-col gap-4 font-light text-gray-500">
-          <div class="rounded-md bg-white p-4 text-lg">
-            Threatened Species Initiative Service Hub
-          </div>
-          <div class="rounded-md bg-white p-4 text-lg">
-            Bioplatform Data Portal
+        <div>
+          <div class="mb-6 text-xl font-bold">Service access request</div>
+          <div class="flex flex-col gap-4 font-light text-gray-500">
+            @for (system of selectedSystems; track system.id) {
+              <div class="rounded-md bg-white p-4 text-lg">
+                {{ system.name }}
+              </div>
+            }
           </div>
         </div>
       </div>
-    </div>
-  } @else {
-    <div class="flex flex-1 flex-col justify-center gap-6 text-center">
-      <div class="text-xl font-bold">Thank you</div>
-      <div class="text-gray-500">
-        Your request has been submitted successfully.
+    } @else {
+      <div class="flex flex-1 flex-col justify-center gap-6 text-center">
+        <div class="text-xl font-bold">Thank you</div>
+        <div class="text-gray-500">
+          Your request has been submitted successfully.
+        </div>
+        <div class="text-center">
+          <button
+            type="button"
+            class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 text-white hover:cursor-pointer hover:bg-sky-950"
+            routerLink="/services"
+          >
+            Close
+          </button>
+        </div>
       </div>
-      <div class="text-center">
+    }
+
+    @if (step < 3) {
+      <div
+        class="mt-6 flex justify-between font-light *:px-12 *:py-3 *:hover:cursor-pointer"
+      >
         <button
           type="button"
-          class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 text-white hover:cursor-pointer hover:bg-sky-950"
-          routerLink="/services"
+          class="rounded-md border-2 border-sky-900 bg-white text-sky-900 hover:bg-gray-50"
+          (click)="prevStep()"
         >
-          Close
+          Back
+        </button>
+        <button
+          type="button"
+          class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 text-white hover:bg-sky-950"
+          (click)="nextStep()"
+        >
+          {{ setButtonText() }}
         </button>
       </div>
-    </div>
-  }
-
-  @if (step < 3) {
-    <div
-      class="mt-6 flex justify-between font-light *:px-12 *:py-3 *:hover:cursor-pointer"
-    >
-      <button
-        type="button"
-        class="rounded-md border-2 border-sky-900 bg-white text-sky-900 hover:bg-gray-50"
-        (click)="prevStep()"
-      >
-        Back
-      </button>
-      <button
-        type="button"
-        class="rounded-md border border-sky-900 bg-sky-900 px-6 py-2 text-white hover:bg-sky-950"
-        (click)="nextStep()"
-      >
-        {{ setButtonText() }}
-      </button>
-    </div>
-  }
+    }
+  </form>
 </div>
