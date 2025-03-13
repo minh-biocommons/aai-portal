@@ -1,11 +1,11 @@
 <div class="relative flex h-full flex-1 grow flex-col">
-  <div class="bg-white p-6 text-2xl font-bold">Joined Services</div>
+  <div class="bg-white p-6 text-2xl font-bold sm:px-48">Joined Services</div>
   @if (loading) {
     <div class="flex h-full flex-1 flex-col items-center justify-center">
       <app-loading-spinner />
     </div>
   } @else {
-    <div class="flex flex-col gap-6 p-6 font-light">
+    <div class="flex flex-col gap-6 p-6 font-light sm:px-48">
       @for (system of approvedSystems; track system) {
         <div
           class="flex items-center justify-between gap-6 rounded-md bg-white p-4"
