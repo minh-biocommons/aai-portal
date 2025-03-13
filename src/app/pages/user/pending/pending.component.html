@@ -1,5 +1,5 @@
 <div class="flex flex-1 flex-col">
-  <div class="bg-white p-6 text-2xl font-bold sm:px-48">
+  <div class="bg-white p-6 text-2xl font-bold lg:px-48">
     Pending access request
   </div>
   @if (loading) {
@@ -7,7 +7,7 @@
       <app-loading-spinner />
     </div>
   } @else {
-    <div class="flex flex-col gap-6 p-6 sm:px-48">
+    <div class="flex flex-col gap-6 p-6 lg:px-48">
       @for (system of pendingSystems; track system) {
         <div
           class="flex items-center justify-between rounded-md bg-white p-4 font-light"
