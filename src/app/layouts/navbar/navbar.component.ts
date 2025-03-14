@@ -37,7 +37,39 @@ export class NavbarComponent implements OnDestroy {
 
   isAuthenticated = this.auth.isAuthenticated();
   user!: any;
+  userType = 'admin';
   userMenuOpen = false;
+
+  userPages = [
+    {
+      label: 'Services',
+      route: '/services',
+    },
+    {
+      label: 'Access',
+      route: '/access',
+    },
+    {
+      label: 'Pending',
+      route: '/pending',
+    },
+  ];
+
+  adminPages = [
+    {
+      label: 'All users',
+      route: '/all-users',
+    },
+    {
+      label: 'Revoked',
+      route: '/revoked',
+    },
+    {
+      label: 'Requests',
+      route: '/requests',
+    },
+  ];
+
   private userSubscription!: Subscription;
 
   constructor() {
@@ -56,6 +88,10 @@ export class NavbarComponent implements OnDestroy {
         this.userMenuOpen = false;
       }
     });
+  }
+
+  getUserType() {
+    return this.userType === 'admin' ? this.adminPages : this.userPages;
   }
 
   toggleUserMenu() {
